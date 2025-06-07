@@ -1,0 +1,24 @@
+---
+- hosts: lock
+  become: true
+  become_user: root
+  tasks:
+    - name: removing lock /var/lib/apt/lists/lock
+      ansible.builtin.file:
+        path: /var/lib/apt/lists/lock
+        state: absent
+
+    - name: removing lock /var/cache/apt/archives/lock
+      ansible.builtin.file:
+        path: /var/cache/apt/archives/lock
+        state: absent
+
+    - name: removing lock /var/lib/dpkg/lock
+      ansible.builtin.file:
+        path: /var/lib/dpkg/lock
+        state: absent
+
+    - name: removing lock /var/lib/apt/lists/lock
+      ansible.builtin.file:
+        path: /var/lib/apt/lists/lock
+        state: absent

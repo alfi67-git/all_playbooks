@@ -1,0 +1,14 @@
+---
+- name: Mise en place de SNMP sur le LAB
+  hosts : homelab
+  become: true
+  tasks:
+    - name: mise à jour des paquets et installation des dernières MàJ
+      ansible.builtin.apt:
+        update_cache: true
+        upgrade: yes
+
+    - name: installation du paquet SNMP
+      ansible.builtin.apt:
+        name: snmp
+        state: latest
