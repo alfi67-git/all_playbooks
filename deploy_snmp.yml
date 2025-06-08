@@ -6,38 +6,5 @@
   # vars_files:
   #   - vault/login_password.yml
 
-  tasks:
-    - name: mise à jour des paquets et installation des dernières MàJ
-      become: true
-      ansible.builtin.apt:
-        update_cache: true
-        upgrade: yes
-
-    - name: installation des paquets SNMP
-      become: true
-      ansible.builtin.apt:
-        pkg: 
-          - snmp
-          - snmpd
-        state: latest      
-
-    - name: modification community 'public' par 'homelab'
-      become: true
-      ansible.builtin.lineinfile:
-        path: /etc/snmp/snmpd.conf
-        regex: '^rocommunity\s+public.*'
-        line: 'rocommunity homelab'
-        state: present
-
-    - name: modification community6 'public' par 'homelab'
-      become: true
-      ansible.builtin.lineinfile:
-        path: /etc/snmp/snmpd.conf
-        regex: '^rocommunity6\s+public.*'
-        line: 'rocommunity6 homelab'
-        state: present
-
-    - name: Redémarrage du service SNMP
-      ansible.builtin.service:
-        name: snmpd
-        state: restarted
+  roles:
+    - deploy_snmp
