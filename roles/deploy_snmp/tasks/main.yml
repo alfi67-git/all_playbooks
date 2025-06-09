@@ -1,21 +1,24 @@
 ---
 # tasks file for roles/deploy_snmp
 - name: mise à jour des paquets et installation des dernières MàJ
-  become: true
   ansible.builtin.apt:
     update_cache: true
     upgrade: yes
 
 - name: installation des paquets SNMP
-  become: true
   ansible.builtin.apt:
     pkg: 
       - snmp
       - snmpd
     state: latest      
 
+- name: modification d'agentaddress
+  ansible.builtin.lineinfile:
+    path: /etc/snmp/snmpd.conf
+    regex: 'agentaddress 127\.0\.0\.1,\[::1\]'
+    line: 'agentaddress udp:161'
+
 - name: modification community 'public' par 'homelab'
-  become: true
   ansible.builtin.lineinfile:
     path: /etc/snmp/snmpd.conf
     regex: '^rocommunity\s+public.*'
@@ -23,7 +26,6 @@
     state: present
 
 - name: modification community6 'public' par 'homelab'
-  become: true
   ansible.builtin.lineinfile:
     path: /etc/snmp/snmpd.conf
     regex: '^rocommunity6\s+public.*'
